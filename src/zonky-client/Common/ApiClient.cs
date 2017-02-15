@@ -19,13 +19,9 @@ namespace Rpliva.Zonky.Client.Common
             BaseUrl = baseUrl;
         }
 
-        public async Task<HttpResponseMessage> JsonPostAsync(string jsonMessage, string url, Token auth = null)
+        public async Task<HttpResponseMessage> JsonPostAsync(string jsonMessage, string url, Token auth = null, Dictionary<string, string> otherHeaders = null)
         {
-            Client.DefaultRequestHeaders.Clear();
-            if (auth != null)
-            {
-                Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(auth.TokenType, auth.AccessToken);
-            }
+            ApplyHeaders(auth, otherHeaders);
 
             using (var content = new StringContent(jsonMessage, Encoding.UTF8, "application/json"))
             {
@@ -38,8 +34,7 @@ namespace Rpliva.Zonky.Client.Common
 
         public async Task<T> FormPostAsync<T>(Dictionary<string, string> parameters, string url)
         {
-            Client.DefaultRequestHeaders.Clear();
-            Client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic d2ViOndlYg==");
+            ApplyHeaders(null, new Dictionary<string, string> { { "authorization", "Basic d2ViOndlYg==" } });
 
             using (var content = new FormUrlEncodedContent(parameters))
             {
@@ -52,7 +47,23 @@ namespace Rpliva.Zonky.Client.Common
 
         public async Task<T> GetAsync<T>(string url, Token auth = null, Dictionary<string, string> otherHeaders = null)
         {
+            ApplyHeaders(auth, otherHeaders);
+
+            using (var response = await Client.GetAsync(BaseUrl + url))
+            {
+                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        protected virtual void CleanupHeaders()
+        {
             Client.DefaultRequestHeaders.Clear();
+        }
+
+        protected virtual void ApplyHeaders(Token auth, Dictionary<string, string> otherHeaders)
+        {
+            CleanupHeaders();
+
             if (auth != null)
             {
                 Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(auth.TokenType, auth.AccessToken);
@@ -63,11 +74,6 @@ namespace Rpliva.Zonky.Client.Common
                 {
                     Client.DefaultRequestHeaders.Add(otherHeader.Key, otherHeader.Value);
                 }
-            }
-
-            using (var response = await Client.GetAsync(BaseUrl + url))
-            {
-                return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
             }
         }
     }

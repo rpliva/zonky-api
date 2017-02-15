@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Rpliva.Zonky.Client.Common;
 using Rpliva.Zonky.Client.OAuth;
@@ -14,13 +15,13 @@ namespace Rpliva.Zonky.Client.Marketplace
             Client = client;
         }
 
-        public async Task<IEnumerable<Loan>> GetLoans(Paging paging = null, SortBy sortBy = null)
+        public async Task<IEnumerable<Loan>> GetLoans(Paging paging = null, IEnumerable<SortBy> sortBys = null)
         {
             // TODO: allow to filter loans
             var headers = new Dictionary<string, string>();
-            if (sortBy != null)
+            if (sortBys != null)
             {
-                headers.Add("X-Order", sortBy.ToHeader());
+                headers.Add("X-Order", string.Join(",", sortBys.Select(s => s.ToHeader())));
             }
             if (paging != null)
             {

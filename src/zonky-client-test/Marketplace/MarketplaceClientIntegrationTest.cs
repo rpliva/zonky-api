@@ -25,7 +25,7 @@ namespace Rpliva.Zonky.Client.Marketplace
         [Fact]
         public void GetLoansSortedByField()
         {
-            var actual = Target.GetLoans(null, new SortBy(LoanField.TermInMonths, OrderBy.Desc)).Result.ToArray();
+            var actual = Target.GetLoans(null, new[] { new SortBy(LoanField.TermInMonths, OrderBy.Desc) }).Result.ToArray();
 
             Assert.Equal(1, actual.Length);
             Assert.Equal("zonky0", actual.Single().NickName);
