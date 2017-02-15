@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Rpliva.Zonky.Client.Common;
 using Rpliva.Zonky.Client.OAuth;
 
 namespace Rpliva.Zonky.Client.Marketplace
