@@ -14,13 +14,18 @@ namespace Rpliva.Zonky.Client.Marketplace
             Client = client;
         }
 
-        public async Task<IEnumerable<Loan>> GetLoans(SortBy sortBy = null)
+        public async Task<IEnumerable<Loan>> GetLoans(Paging paging = null, SortBy sortBy = null)
         {
             // TODO: allow to filter loans
             var headers = new Dictionary<string, string>();
             if (sortBy != null)
             {
                 headers.Add("X-Order", sortBy.ToHeader());
+            }
+            if (paging != null)
+            {
+                headers.Add("X-Page", paging.Page.ToString());
+                headers.Add("X-Size", paging.Size.ToString());
             }
 
             return await Client.GetAsync<Loan[]>("loans/marketplace", otherHeaders: headers);

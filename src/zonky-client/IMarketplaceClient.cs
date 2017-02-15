@@ -9,6 +9,6 @@ namespace Rpliva.Zonky.Client
     public interface IMarketplaceClient
     {
         Task<LoanDetail> GetLoanDetail(Token token, int loanId);
-        Task<IEnumerable<Loan>> GetLoans(SortBy sortBy = null);
+        Task<IEnumerable<Loan>> GetLoans(Paging paging = null, SortBy sortBy = null);
     }
 }
