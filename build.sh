@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-dotnet restore && dotnet build **/project.json && dotnet test src/zonky-client-test
+dotnet restore
+dotnet build **/project.json
+dotnet test src/zonky-client-test
