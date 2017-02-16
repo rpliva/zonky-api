@@ -35,20 +35,7 @@ namespace Rpliva.Zonky.Client.Investing
 
         public void InvestmentIncrease(Token token, int amount)
         {
-            // TODO: increase invest
             throw new NotImplementedException();
-           /* using (var content = new StringContent("{  \"amount\": 200}", Encoding.UTF8, "application/json"))
-            {
-                using (HttpResponseMessage response = null)
-                {
-                    var requestUri = new Uri(baseAddress, "undefined");
-                    using (var request = new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = requestUri, Content = content })
-                    {
-                        response = await httpClient.SendAsync(request);
-                    }
-                    string responseData = await response.Content.ReadAsStringAsync();
-                }
-            } */
         }
 
         private class InvestmentParameters
