@@ -14,6 +14,12 @@ namespace Rpliva.Zonky.Client.Marketplace
         }
 
         [Fact]
+        public void FailingTest()
+        {
+            Assert.Equal(1, 2);
+        }
+
+        [Fact]
         public void GetAllLoans()
         {
             var actual = Target.GetLoans().Result.ToArray();
